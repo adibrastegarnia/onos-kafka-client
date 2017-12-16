@@ -1,10 +1,9 @@
-# onos-kafka-client
 
-## Usage Guide:
+# Usage Guide:
 
 1- First, follow the instructions in https://wiki.onosproject.org/display/ONOS/Kafka+Integration to run onos, Activate Zookeeper and, Activate the Kafka server.
 
-2- If you run onos on a remote server (i.e. a machine other than your localhost), you need to update URLs (KAFKA_REGISTER and KAFKA_SUBSRIBE) in OnosRestUrls.java based on your remote server's IP address. 
+2- If you run onos on a remote server (i.e. a machine other than your localhost), you need to update URLs (**KAFKA_REGISTER** and **KAFKA_SUBSRIBE**) in *OnosRestUrls.java* based on your remote server's IP address. 
 
 3- If you run the main, the program registers itself to listen to link events. You can change it to listen to other type of events (i.e. host evetns).  
 
