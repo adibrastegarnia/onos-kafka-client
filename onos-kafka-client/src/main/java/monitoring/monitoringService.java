@@ -9,7 +9,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.json.simple.JSONObject;
-import restapidrivers.DefaultRestApiHelper;
+import restapihelper.DefaultRestApiHelper;
 import restapiurls.OnosRestUrls;
 
 import java.io.BufferedReader;
