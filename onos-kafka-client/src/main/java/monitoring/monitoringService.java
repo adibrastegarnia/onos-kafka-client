@@ -10,7 +10,7 @@ import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.json.simple.JSONObject;
 import restapihelper.DefaultRestApiHelper;
-import restapiurls.OnosRestUrls;
+import restapiurls.onosRestUrls;
 
 import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
@@ -72,7 +72,7 @@ public class monitoringService {
             e.printStackTrace();
         }
         BufferedReader br = restApiHelper.httpPostRequest(httpClient,
-                OnosRestUrls.KAFKA_REGISTER.getUrl(), input);
+                onosRestUrls.KAFKA_REGISTER.getUrl(), input);
 
         return br;
     }
@@ -97,7 +97,7 @@ public class monitoringService {
             e.printStackTrace();
         }
         restApiHelper.httpPostRequest(httpClient,
-                OnosRestUrls.KAFKA_SUBSCRIBE.getUrl(), stringEntity);
+                onosRestUrls.KAFKA_SUBSCRIBE.getUrl(), stringEntity);
 
     }
 

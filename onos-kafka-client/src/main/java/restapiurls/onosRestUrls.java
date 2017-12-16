@@ -1,7 +1,7 @@
 package restapiurls;
 
 
-public enum OnosRestUrls {
+public enum onosRestUrls {
 
     KAFKA_REGISTER("http://127.0.0.1:8181/onos/kafka-integration/kafkaService/register"),
     KAFKA_SUBSCRIBE("http://127.0.0.1:8181/onos/kafka-integration/kafkaService/subscribe");
@@ -9,7 +9,7 @@ public enum OnosRestUrls {
 
     private String url;
 
-    OnosRestUrls(String url) {
+    onosRestUrls(String url) {
         this.url = url;
 
     }
