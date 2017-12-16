@@ -6,4 +6,4 @@
 
 3- After the above steps, If you run the main, the program registers itself to listen to the link events. You can easily change it to listen to other type of events (i.e. host evetns).  
 
-4- To test the functionality of the consumer app, you can use mininet to simulate a network topology.  In the mininet environment, you can use the link command (e.g *link switch1 switch2 down*, or *link switch1 switch2 up*) to enable or disable links between the network switches. Whenever there is a change in the links between the network devices, the program detects it and prints recevied consumer records. 
+4- Finally, to test the functionality of the consumer app, you can use mininet to simulate a network topology.  In the mininet environment, you can use the link command (e.g *link switch1 switch2 down*, or *link switch1 switch2 up*) to enable or disable links between the network switches. Whenever there is a change in the links between the network devices, the program detects it and prints recevied consumer records. 
