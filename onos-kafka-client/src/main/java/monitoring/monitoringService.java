@@ -6,8 +6,10 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.BytesDeserializer;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.utils.Bytes;
 import org.json.simple.JSONObject;
 import restapihelper.DefaultRestApiHelper;
 import restapiurls.onosRestUrls;
@@ -16,7 +18,7 @@ import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Properties;
-
+import java.util.Arrays;
 
 /**
  * Monitor device and link events using onos kafka-integration app.
@@ -38,7 +40,7 @@ public class monitoringService {
 
     }
 
-    private static Consumer<Long, String> createConsumer(JSONObject registerResponse, String eventType) {
+    private static Consumer<Long, Bytes> createConsumer(JSONObject registerResponse, String eventType) {
         final Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 BOOTSTRAP_SERVERS);
@@ -47,9 +49,9 @@ public class monitoringService {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 LongDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
+                BytesDeserializer.class.getName());
 
-        final Consumer<Long, String> consumer =
+        final Consumer<Long, Bytes> consumer =
                 new KafkaConsumer<>(props);
 
         // Subscribe to the topic.
@@ -101,24 +103,35 @@ public class monitoringService {
 
     }
 
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
     /**
      * creates and runs a consumer.
      * @param registerResponse register response information.
      * @throws InterruptedException
      */
     public void runConsumer(JSONObject registerResponse, String eventType) throws InterruptedException {
-        final Consumer<Long, String> consumer = createConsumer(registerResponse, eventType);
+        final Consumer<Long, Bytes> consumer = createConsumer(registerResponse, eventType);
 
 
         while (true) {
-            final ConsumerRecords<Long, String> consumerRecords =
+            final ConsumerRecords<Long, Bytes> consumerRecords =
                     consumer.poll(100);
 
 
             consumerRecords.forEach(record -> {
-                System.out.printf("Consumer Record:(%d, %s, %d, %d)\n",
-                        record.key(), record.value(),
-                        record.partition(), record.offset());
+                System.out.printf("value1 = %s\n", record.value().get());
+
+
             });
 
             consumer.commitAsync();

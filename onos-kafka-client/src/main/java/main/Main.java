@@ -15,15 +15,15 @@ public class Main {
          * Register a consumer to receive link events.
          */
         String appName = "kafkaConsumerApp";
-        String linkEventType = "LINK";
+        String EventType = "PACKET";
         JsonBuilder jsonBuilder = new JsonBuilder();
-        monitoringService monitorLink = new monitoringService();
-        BufferedReader LinksBufferReader = monitorLink.kafkaRegister(appName);
-        JSONObject registerReponseLinks = jsonBuilder.createJsonObject(LinksBufferReader);
-        monitorLink.kafkaSubscribe(linkEventType, appName, registerReponseLinks);
+        monitoringService monitor = new monitoringService();
+        BufferedReader PacketsBufferReader = monitor.kafkaRegister(appName);
+        JSONObject registerReponse = jsonBuilder.createJsonObject(PacketsBufferReader);
+        monitor.kafkaSubscribe(EventType, appName, registerReponse);
 
         try {
-            monitorLink.runConsumer(registerReponseLinks,linkEventType);
+            monitor.runConsumer(registerReponse,EventType);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

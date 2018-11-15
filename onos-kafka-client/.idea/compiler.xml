@@ -9,8 +9,5 @@
         <module name="onos-kafka-client" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="onos-kafka-client" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
