@@ -126,7 +126,7 @@ public class monitoringService {
 
 
             consumerRecords.forEach(record -> {
-                log.info("Link Event = %s\n" + record.value().get());
+                log.info("Link Event = " + record.value().get() + "\n");
 
 
             });
@@ -154,7 +154,7 @@ public class monitoringService {
 
 
             consumerRecords.forEach(record -> {
-                log.info("Packet Event = %s\n" + record.value().get());
+                log.info("Packet Event =" + record.value().get() + "\n");
 
 
             });
