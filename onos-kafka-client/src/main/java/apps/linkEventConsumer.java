@@ -17,7 +17,7 @@ public class linkEventConsumer {
          * Register a consumer to receive link events.
          */
         String appName = "LinkConsumerApp";
-        String EventType = "PACKET";
+        String EventType = "LINK";
 
         JsonBuilder jsonBuilder = new JsonBuilder();
         monitoringService monitor = new monitoringService();
@@ -28,16 +28,13 @@ public class linkEventConsumer {
 
         ExecutorService monitorExecutor = Executors.newSingleThreadExecutor();
 
-        monitorExecutor.execute(()-> {
+        monitorExecutor.execute(() -> {
             try {
-                monitor.linkEventConsumer(registerReponse,EventType);
+                monitor.linkEventConsumer(registerReponse, EventType);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
-
-
-
 
 
     }

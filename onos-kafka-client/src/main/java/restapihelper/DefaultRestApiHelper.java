@@ -131,8 +131,9 @@ public class DefaultRestApiHelper implements RestApiHelper {
 
     /**
      * Create a http delete request.
+     *
      * @param httpClient an instance of http client.
-     * @param uri url.
+     * @param uri        url.
      */
 
     public void httpDelRequest(HttpClient httpClient,

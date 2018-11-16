@@ -8,22 +8,23 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.BytesDeserializer;
 import org.apache.kafka.common.serialization.LongDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.utils.Bytes;
 import org.json.simple.JSONObject;
 import restapihelper.DefaultRestApiHelper;
 import restapiurls.onosRestUrls;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Properties;
-import java.util.Arrays;
 
 /**
- * Monitor device and link events using onos kafka-integration app.
+ * Monitor device,link , and packet events using onos kafka-integration app.
  */
 public class monitoringService {
+
+    final static Logger log = Logger.getLogger(monitoringService.class);
 
 
     private final static String BOOTSTRAP_SERVERS =
@@ -63,6 +64,7 @@ public class monitoringService {
 
     /**
      * Register an app for recevining onos events.
+     *
      * @param appName application name
      * @return registration response.
      */
@@ -83,9 +85,8 @@ public class monitoringService {
     }
 
     /**
-     *
-     * @param eventType Event type.
-     * @param appName application name.
+     * @param eventType       Event type.
+     * @param appName         application name.
      * @param registerReponse registration response.
      */
     public void kafkaSubscribe(String eventType, String appName, JSONObject registerReponse) {
@@ -109,10 +110,15 @@ public class monitoringService {
 
     }
 
+    /**
+     * Creates and runs a link event consumer.
+     * @param registerResponse
+     * @param eventType
+     * @throws InterruptedException
+     */
 
     public void linkEventConsumer(JSONObject registerResponse, String eventType) throws InterruptedException {
         final Consumer<Long, Bytes> consumer = createConsumer(registerResponse, eventType);
-
 
         while (true) {
             final ConsumerRecords<Long, Bytes> consumerRecords =
@@ -120,7 +126,7 @@ public class monitoringService {
 
 
             consumerRecords.forEach(record -> {
-                System.out.printf("Link Event = %s\n", record.value().get());
+                log.info("Link Event = %s\n" + record.value().get());
 
 
             });
@@ -132,10 +138,9 @@ public class monitoringService {
     }
 
 
-
-
     /**
      * creates and runs a  packet event consumer.
+     *
      * @param registerResponse register response information.
      * @throws InterruptedException
      */
@@ -149,7 +154,7 @@ public class monitoringService {
 
 
             consumerRecords.forEach(record -> {
-                System.out.printf("Packet Event = %s\n", record.value().get());
+                log.info("Packet Event = %s\n" + record.value().get());
 
 
             });
