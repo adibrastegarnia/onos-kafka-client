@@ -67,6 +67,7 @@ public class monitoringService {
      * @return registration response.
      */
     public BufferedReader kafkaRegister(String appName) {
+        httpClient = restApiHelper.createHttpClient("onos", "rocks");
         StringEntity input = null;
         try {
             input = new StringEntity(appName.toString());
@@ -75,6 +76,8 @@ public class monitoringService {
         }
         BufferedReader br = restApiHelper.httpPostRequest(httpClient,
                 onosRestUrls.KAFKA_REGISTER.getUrl(), input);
+
+        restApiHelper.httpClientShutDown(httpClient);
 
         return br;
     }
@@ -87,6 +90,7 @@ public class monitoringService {
      */
     public void kafkaSubscribe(String eventType, String appName, JSONObject registerReponse) {
 
+        httpClient = restApiHelper.createHttpClient("onos", "rocks");
 
         JSONObject jsonResult = new JSONObject();
         jsonResult.put("appName", appName);
@@ -101,25 +105,12 @@ public class monitoringService {
         restApiHelper.httpPostRequest(httpClient,
                 onosRestUrls.KAFKA_SUBSCRIBE.getUrl(), stringEntity);
 
+        restApiHelper.httpClientShutDown(httpClient);
+
     }
 
-    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    public static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for ( int j = 0; j < bytes.length; j++ ) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
 
-    /**
-     * creates and runs a consumer.
-     * @param registerResponse register response information.
-     * @throws InterruptedException
-     */
-    public void runConsumer(JSONObject registerResponse, String eventType) throws InterruptedException {
+    public void linkEventConsumer(JSONObject registerResponse, String eventType) throws InterruptedException {
         final Consumer<Long, Bytes> consumer = createConsumer(registerResponse, eventType);
 
 
@@ -129,7 +120,36 @@ public class monitoringService {
 
 
             consumerRecords.forEach(record -> {
-                System.out.printf("value1 = %s\n", record.value().get());
+                System.out.printf("Link Event = %s\n", record.value().get());
+
+
+            });
+
+            consumer.commitAsync();
+
+        }
+
+    }
+
+
+
+
+    /**
+     * creates and runs a  packet event consumer.
+     * @param registerResponse register response information.
+     * @throws InterruptedException
+     */
+    public void packetEventConsumer(JSONObject registerResponse, String eventType) throws InterruptedException {
+        final Consumer<Long, Bytes> consumer = createConsumer(registerResponse, eventType);
+
+
+        while (true) {
+            final ConsumerRecords<Long, Bytes> consumerRecords =
+                    consumer.poll(100);
+
+
+            consumerRecords.forEach(record -> {
+                System.out.printf("Packet Event = %s\n", record.value().get());
 
 
             });

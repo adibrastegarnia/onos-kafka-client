@@ -71,6 +71,7 @@ public class DefaultRestApiHelper implements RestApiHelper {
             throw new RuntimeException("Failed : HTTP error code : "
                     + httpResponse.getStatusLine().getStatusCode());
         }
+        //httpClientShutDown(httpClient);
         return httpResponse;
 
     }
@@ -121,6 +122,8 @@ public class DefaultRestApiHelper implements RestApiHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //httpClientShutDown(httpClient);
 
         return br;
 
